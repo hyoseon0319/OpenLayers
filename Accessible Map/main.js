@@ -17,13 +17,13 @@ var map = new Map({
   }),
 });
 
-document.getElementById('zoom-out').onclick = function () {
+document.getElementById('zoom-out').onclick = function () { // 확대
   var view = map.getView();
   var zoom = view.getZoom();
   view.setZoom(zoom - 1);
 };
 
-document.getElementById('zoom-in').onclick = function () {
+document.getElementById('zoom-in').onclick = function () { // 축소
   var view = map.getView();
   var zoom = view.getZoom();
   view.setZoom(zoom + 1);

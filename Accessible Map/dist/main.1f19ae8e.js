@@ -53965,12 +53965,14 @@ var map = new _Map.default({
 });
 
 document.getElementById('zoom-out').onclick = function () {
+  // 확대
   var view = map.getView();
   var zoom = view.getZoom();
   view.setZoom(zoom - 1);
 };
 
 document.getElementById('zoom-in').onclick = function () {
+  // 축소
   var view = map.getView();
   var zoom = view.getZoom();
   view.setZoom(zoom + 1);
@@ -54003,7 +54005,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "55808" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "51279" + '/');
 
   ws.onmessage = function (event) {
     checkedAssets = {};
