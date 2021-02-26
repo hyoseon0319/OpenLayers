@@ -1,0 +1,117 @@
+var _parcelHelpers = require("@parcel/transformer-js/lib/esmodule-helpers.js");
+_parcelHelpers.defineInteropFlag(exports);
+_parcelHelpers.export(exports, "BufferUsage", function () {
+  return BufferUsage;
+});
+_parcelHelpers.export(exports, "getArrayClassForType", function () {
+  return getArrayClassForType;
+});
+var _webglJs = require('../webgl.js');
+var _assertsJs = require('../asserts.js');
+var BufferUsage = {
+  STATIC_DRAW: _webglJs.STATIC_DRAW,
+  STREAM_DRAW: _webglJs.STREAM_DRAW,
+  DYNAMIC_DRAW: _webglJs.DYNAMIC_DRAW
+};
+/**
+* @classdesc
+* Object used to store an array of data as well as usage information for that data.
+* Stores typed arrays internally, either Float32Array or Uint16/32Array depending on
+* the buffer type (ARRAY_BUFFER or ELEMENT_ARRAY_BUFFER) and available extensions.
+*
+* To populate the array, you can either use:
+* * A size using `#ofSize(buffer)`
+* * An `ArrayBuffer` object using `#fromArrayBuffer(buffer)`
+* * A plain array using `#fromArray(array)`
+*
+* Note:
+* See the documentation of [WebGLRenderingContext.bufferData](https://developer.mozilla.org/en-US/docs/Web/API/WebGLRenderingContext/bufferData)
+* for more info on buffer usage.
+* @api
+*/
+var WebGLArrayBuffer = /** @class*/
+(function () {
+  /**
+  * @param {number} type Buffer type, either ARRAY_BUFFER or ELEMENT_ARRAY_BUFFER.
+  * @param {number=} opt_usage Intended usage, either `STATIC_DRAW`, `STREAM_DRAW` or `DYNAMIC_DRAW`.
+  * Default is `DYNAMIC_DRAW`.
+  */
+  function WebGLArrayBuffer(type, opt_usage) {
+    /**
+    * @private
+    * @type {Float32Array|Uint32Array}
+    */
+    this.array = null;
+    /**
+    * @private
+    * @type {number}
+    */
+    this.type = type;
+    _assertsJs.assert(type === _webglJs.ARRAY_BUFFER || type === _webglJs.ELEMENT_ARRAY_BUFFER, 62);
+    /**
+    * @private
+    * @type {number}
+    */
+    this.usage = opt_usage !== undefined ? opt_usage : BufferUsage.STATIC_DRAW;
+  }
+  /**
+  * Populates the buffer with an array of the given size (all values will be zeroes).
+  * @param {number} size Array size
+  */
+  WebGLArrayBuffer.prototype.ofSize = function (size) {
+    this.array = new (getArrayClassForType(this.type))(size);
+  };
+  /**
+  * Populates the buffer with an array of the given size (all values will be zeroes).
+  * @param {Array<number>} array Numerical array
+  */
+  WebGLArrayBuffer.prototype.fromArray = function (array) {
+    this.array = getArrayClassForType(this.type).from(array);
+  };
+  /**
+  * Populates the buffer with a raw binary array buffer.
+  * @param {ArrayBuffer} buffer Raw binary buffer to populate the array with. Note that this buffer must have been
+  * initialized for the same typed array class.
+  */
+  WebGLArrayBuffer.prototype.fromArrayBuffer = function (buffer) {
+    this.array = new (getArrayClassForType(this.type))(buffer);
+  };
+  /**
+  * @return {number} Buffer type.
+  */
+  WebGLArrayBuffer.prototype.getType = function () {
+    return this.type;
+  };
+  /**
+  * Will return null if the buffer was not initialized
+  * @return {Float32Array|Uint32Array} Array.
+  */
+  WebGLArrayBuffer.prototype.getArray = function () {
+    return this.array;
+  };
+  /**
+  * @return {number} Usage.
+  */
+  WebGLArrayBuffer.prototype.getUsage = function () {
+    return this.usage;
+  };
+  /**
+  * Will return 0 if the buffer is not initialized
+  * @return {number} Array size
+  */
+  WebGLArrayBuffer.prototype.getSize = function () {
+    return this.array ? this.array.length : 0;
+  };
+  return WebGLArrayBuffer;
+})();
+function getArrayClassForType(type) {
+  switch (type) {
+    case _webglJs.ARRAY_BUFFER:
+      return Float32Array;
+    case _webglJs.ELEMENT_ARRAY_BUFFER:
+      return Uint32Array;
+    default:
+      return Float32Array;
+  }
+}
+exports.default = WebGLArrayBuffer;

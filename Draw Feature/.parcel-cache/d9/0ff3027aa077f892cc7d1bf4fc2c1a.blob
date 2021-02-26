@@ -1,0 +1,48 @@
+var _parcelHelpers = require("@parcel/transformer-js/lib/esmodule-helpers.js");
+_parcelHelpers.defineInteropFlag(exports);
+_parcelHelpers.export(exports, "toContext", function () {
+  return toContext;
+});
+_parcelHelpers.export(exports, "getVectorContext", function () {
+  return getVectorContext;
+});
+_parcelHelpers.export(exports, "getRenderPixel", function () {
+  return getRenderPixel;
+});
+var _renderCanvasImmediateJs = require('./render/canvas/Immediate.js');
+var _renderCanvasImmediateJsDefault = _parcelHelpers.interopDefault(_renderCanvasImmediateJs);
+var _hasJs = require('./has.js');
+var _transformJs = require('./transform.js');
+var _rendererVectorJs = require('./renderer/vector.js');
+var _projJs = require('./proj.js');
+function toContext(context, opt_options) {
+  var canvas = context.canvas;
+  var options = opt_options ? opt_options : {};
+  var pixelRatio = options.pixelRatio || _hasJs.DEVICE_PIXEL_RATIO;
+  var size = options.size;
+  if (size) {
+    canvas.width = size[0] * pixelRatio;
+    canvas.height = size[1] * pixelRatio;
+    canvas.style.width = size[0] + 'px';
+    canvas.style.height = size[1] + 'px';
+  }
+  var extent = [0, 0, canvas.width, canvas.height];
+  var transform = _transformJs.scale(_transformJs.create(), pixelRatio, pixelRatio);
+  return new _renderCanvasImmediateJsDefault.default(context, pixelRatio, extent, transform, 0);
+}
+function getVectorContext(event) {
+  var frameState = event.frameState;
+  var transform = _transformJs.multiply(event.inversePixelTransform.slice(), frameState.coordinateToPixelTransform);
+  var squaredTolerance = _rendererVectorJs.getSquaredTolerance(frameState.viewState.resolution, frameState.pixelRatio);
+  var userTransform;
+  var userProjection = _projJs.getUserProjection();
+  if (userProjection) {
+    userTransform = _projJs.getTransformFromProjections(userProjection, frameState.viewState.projection);
+  }
+  return new _renderCanvasImmediateJsDefault.default(event.context, frameState.pixelRatio, frameState.extent, transform, frameState.viewState.rotation, squaredTolerance, userTransform);
+}
+function getRenderPixel(event, pixel) {
+  var result = pixel.slice(0);
+  _transformJs.apply(event.inversePixelTransform.slice(), result);
+  return result;
+}

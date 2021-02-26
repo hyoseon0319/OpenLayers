@@ -1,0 +1,80 @@
+var _parcelHelpers = require("@parcel/transformer-js/lib/esmodule-helpers.js");
+_parcelHelpers.defineInteropFlag(exports);
+_parcelHelpers.export(exports, "ARRAY_BUFFER", function () {
+  return ARRAY_BUFFER;
+});
+_parcelHelpers.export(exports, "ELEMENT_ARRAY_BUFFER", function () {
+  return ELEMENT_ARRAY_BUFFER;
+});
+_parcelHelpers.export(exports, "STREAM_DRAW", function () {
+  return STREAM_DRAW;
+});
+_parcelHelpers.export(exports, "STATIC_DRAW", function () {
+  return STATIC_DRAW;
+});
+_parcelHelpers.export(exports, "DYNAMIC_DRAW", function () {
+  return DYNAMIC_DRAW;
+});
+_parcelHelpers.export(exports, "UNSIGNED_BYTE", function () {
+  return UNSIGNED_BYTE;
+});
+_parcelHelpers.export(exports, "UNSIGNED_SHORT", function () {
+  return UNSIGNED_SHORT;
+});
+_parcelHelpers.export(exports, "UNSIGNED_INT", function () {
+  return UNSIGNED_INT;
+});
+_parcelHelpers.export(exports, "FLOAT", function () {
+  return FLOAT;
+});
+_parcelHelpers.export(exports, "getContext", function () {
+  return getContext;
+});
+_parcelHelpers.export(exports, "getSupportedExtensions", function () {
+  return getSupportedExtensions;
+});
+var ARRAY_BUFFER = 0x8892;
+var ELEMENT_ARRAY_BUFFER = 0x8893;
+var STREAM_DRAW = 0x88e0;
+var STATIC_DRAW = 0x88e4;
+var DYNAMIC_DRAW = 0x88e8;
+var UNSIGNED_BYTE = 0x1401;
+var UNSIGNED_SHORT = 0x1403;
+var UNSIGNED_INT = 0x1405;
+var FLOAT = 0x1406;
+/** end of goog.webgl constants
+*/
+/**
+* @const
+* @type {Array<string>}
+*/
+var CONTEXT_IDS = ['experimental-webgl', 'webgl', 'webkit-3d', 'moz-webgl'];
+function getContext(canvas, opt_attributes) {
+  var ii = CONTEXT_IDS.length;
+  for (var i = 0; i < ii; ++i) {
+    try {
+      var context = canvas.getContext(CONTEXT_IDS[i], opt_attributes);
+      if (context) {
+        return (
+          /** @type {!WebGLRenderingContext}*/
+          context
+        );
+      }
+    } catch (e) {}
+  }
+  return null;
+}
+/**
+* @type {Array<string>}
+*/
+var supportedExtensions;
+function getSupportedExtensions() {
+  if (!supportedExtensions) {
+    var canvas = document.createElement('canvas');
+    var gl = getContext(canvas);
+    if (gl) {
+      supportedExtensions = gl.getSupportedExtensions();
+    }
+  }
+  return supportedExtensions;
+}

@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <title>Draw Features</title>
+    <!-- Pointer events polyfill for old browsers, see https://caniuse.com/#feat=pointer -->
+    <script src="7268cf6ec2dbdb4b4fd1eba963eeddbd"></script>
+    <style data-parcel-key="bf7f1160d1b5f074419a923f3d326fe9">
+      .map {
+        width: 100%;
+        height:400px;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="map" class="map"></div>
+    <form class="form-inline">
+      <label for="type">Geometry type: &nbsp;</label>
+      <select class="form-control mr-2 mb-2 mt-2" id="type">
+        <option value="Point">Point</option>
+        <option value="LineString">LineString</option>
+        <option value="Polygon">Polygon</option>
+        <option value="Circle">Circle</option>
+        <option value="None">None</option>
+      </select>
+      <input class="form-control mr-2 mb-2 mt-2" type="button" value="Undo" id="undo">
+    </form>
+    <script src="5ab0d911be27f832b081dcdb7ddcd802"></script>
+  </body>
+</html>
